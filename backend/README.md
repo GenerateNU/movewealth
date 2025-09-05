@@ -12,6 +12,7 @@
 10. Install Postman
 11. Make a new tab, and send a GET request to ```http://localhost:8080/health``` and ensure that the returned result is ```{ "status": "ok", "message": "API is running" }```
 12. Make a MongoDB account and get Sierra to add you to the list of users by providing you an email
+13. Run ```pre-commit install```
 
 # Software Bootcamp Onboarding
 
