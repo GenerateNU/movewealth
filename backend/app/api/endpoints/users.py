@@ -1,4 +1,3 @@
-# app/api/endpoints/users.py
 from fastapi import APIRouter, HTTPException, Depends, status, UploadFile, File, Form, Body
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
