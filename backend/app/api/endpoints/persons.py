@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body
 from typing import List
-from backend.app.schemas.person import Person, CreatePersonRequest
-from backend.app.models.person import person_model
+from app.schemas.person import Person, CreatePersonRequest
+from app.models.person import person_model
 
 router = APIRouter()
 

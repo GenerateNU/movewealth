@@ -13,7 +13,7 @@ class Person(BaseModel):
     class Config:
         from_attributes = True
 
-class CreatePersonRequest(Person):
+class CreatePersonRequest(BaseModel):
     name: str
     major: str
     fun_fact: str

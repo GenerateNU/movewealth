@@ -8,7 +8,7 @@ from datetime import timedelta
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from backend.app.api.endpoints import persons
+from app.api.endpoints import persons
 
 app = FastAPI()
 

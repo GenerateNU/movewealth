@@ -1,6 +1,6 @@
 from typing import List
 from motor.motor_asyncio import AsyncIOMotorCollection
-from backend.app.schemas.person import Person, CreatePersonRequest
+from app.schemas.person import Person, CreatePersonRequest
 from app.database.mongodb import db
 
 class PersonModel:
@@ -10,7 +10,8 @@ class PersonModel:
     async def create_person(self, person: CreatePersonRequest) -> Person:
         person_data = person.model_dump()
 
-        await self.collection.insert_one(person_data)
+        result = await self.collection.insert_one(person_data)
+        person_data["id"] = str(result.inserted_id)
 
         return Person(**person_data)
 
