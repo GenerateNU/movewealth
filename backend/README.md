@@ -14,3 +14,7 @@
     "status": "ok",
     "message": "API is running"
 }```
+
+# Software Bootcamp Onboarding
+
+1. Checkout and try hitting some of the API endpoints (except ```/clear```!!!) in the ```persons``` controller using Postman
