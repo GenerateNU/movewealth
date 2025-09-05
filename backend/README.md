@@ -21,3 +21,4 @@
 1. Checkout the API endpoints in the ```persons``` controller using Postman
 2. Hit the ```/new``` endpoint to add yourself to the DB!
 3. Sign into your MongoDB account in the browser and verify that your name appears in the collection!
+4. Get MongoDB VSCode extension
