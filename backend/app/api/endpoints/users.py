@@ -58,8 +58,8 @@ async def create_user(
     username: Annotated[str, Form(...)],
     email: Annotated[EmailStr, Form(...)],
     password: Annotated[str, Form(...)],
-    first_name: Annotated[str | None, Form(None)],
-    last_name: Annotated[str | None, Form(None)],
+    first_name: Annotated[str | None, Form()] = None,
+    last_name: Annotated[str | None, Form()] = None,
 ):
     """
     Create a new user with publications and avatar image.
