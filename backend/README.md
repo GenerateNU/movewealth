@@ -1,7 +1,7 @@
 # Instructions For Setting Up Backend
 
-1. Run ```cd backend```
-2. Install Python 3
+1. Install Python 3 at the root level of your laptop
+2. Run ```cd backend```
 3. Run ```python3 -m venv venv```
 4. Run ```source venv/bin/activate```
 5. Run ```pip install -r requirements.txt```
