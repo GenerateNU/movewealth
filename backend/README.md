@@ -12,3 +12,5 @@
     "status": "ok",
     "message": "API is running"
 }```
+10. Make a ```.env``` file
+11. Set the values for the variables ```MONGODB_URL``` and ```ACCESS_TOKEN_EXPIRE_MINUTES```
