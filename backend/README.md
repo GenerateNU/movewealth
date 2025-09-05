@@ -5,5 +5,10 @@
 3. Run ```python3 -m venv venv```
 4. Run ```source venv/bin/activate```
 5. Run ```pip install -r requirements.txt```
-6. In the bottom right, ensure that ```venv``` is selected as the Python Interpreter
+6. ```Cmd + Shift + P``` > ```Python: Select Interpreter``` > ```Enter interpreter path...``` > ```./backend/venv/bin/python```
 7. Run ```python run.py```
+8. Install Postman
+9. Make a new tab, and send a GET request to ```http://localhost:8080/health``` and ensure that the returned result is ```{
+    "status": "ok",
+    "message": "API is running"
+}```
