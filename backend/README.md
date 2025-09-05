@@ -19,3 +19,4 @@
 2. Hit the ```/new``` endpoint to add yourself to the DB!
 3. Sign into your MongoDB account in the browser and verify that your name appears in the collection!
 4. Get MongoDB VSCode extension
+5. Make a new branch using git and make a new endpoint to fetch yourself
