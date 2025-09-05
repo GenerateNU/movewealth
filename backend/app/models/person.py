@@ -10,8 +10,7 @@ class PersonModel:
     async def create_person(self, person: CreatePersonRequest) -> Person:
         person_data = person.model_dump()
 
-        result = await self.collection.insert_one(person_data)
-        person_data["id"] = str(result.inserted_id)
+        await self.collection.insert_one(person_data)
 
         return Person(**person_data)
 

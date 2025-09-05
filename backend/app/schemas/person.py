@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class Person(BaseModel):
-    id: str
     name: str
     major: str
     fun_fact: str
