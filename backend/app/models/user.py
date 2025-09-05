@@ -1,4 +1,3 @@
-# app/models/user.py
 from pydantic import EmailStr
 from app.schemas.user import UserInDB
 from app.database.mongodb import db
