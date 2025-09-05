@@ -1,13 +1,14 @@
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from app.api.endpoints import users, health
-from app.utils import verify_password, create_access_token
-from app.models.user import user_model
 from datetime import timedelta
-from jose import JWTError, jwt
+from typing import Annotated
+
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordRequestForm
+
+from app.api.endpoints import health, persons, users
 from app.core.config import settings
-from app.api.endpoints import persons
+from app.models.user import user_model
+from app.utils import create_access_token, verify_password
 
 app = FastAPI()
 
@@ -34,9 +35,10 @@ app.include_router(persons.router, prefix="/persons", tags=["persons"])
 
 app.include_router(health.router, prefix="", tags=["Health"])
 
+
 # Login
 @app.post("/token", response_model=dict)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     user = await user_model.get_by_email(form_data.username)
     if not user or not verify_password(form_data.password, user["hashed_password"]):
         raise HTTPException(

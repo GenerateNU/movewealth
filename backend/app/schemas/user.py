@@ -1,13 +1,14 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional, Tuple
+
 
 class UserBase(BaseModel):
     email: EmailStr
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    first_name: str | None = None
+    last_name: str | None = None
 
     class Config:
         from_attributes = True
+
 
 class UserCreate(UserBase):
     username: str
@@ -16,12 +17,14 @@ class UserCreate(UserBase):
     class Config:
         from_attributes = True
 
+
 class User(UserBase):
     id: str
     username: str
 
     class Config:
         from_attributes = True
+
 
 class UserInDB(UserBase):
     id: str
@@ -31,12 +34,15 @@ class UserInDB(UserBase):
     class Config:
         from_attributes = True
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    email: str | None = None
+
 
 class UserResponse(BaseModel):
     access_token: str

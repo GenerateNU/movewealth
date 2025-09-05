@@ -1,17 +1,17 @@
-from fastapi import APIRouter, HTTPException, Depends, status, UploadFile, File, Form, Body
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from typing import List, Optional, Tuple
-from datetime import timedelta, datetime
-from bson import ObjectId
-from pydantic import EmailStr, ValidationError
-from app.schemas.user import User, UserCreate, UserResponse, UserInDB
-from app.models.user import user_model
-from app.utils import hash_password, verify_password, create_access_token, settings
 import logging
 import re
-import json
-from fastapi.responses import JSONResponse
+from datetime import timedelta
+from typing import Annotated
+
+from app.models.user import user_model
+from app.schemas.user import User, UserInDB, UserResponse
+from app.utils import create_access_token, hash_password, settings, verify_password
+from bson import ObjectId
+from fastapi import APIRouter, Depends, Form, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from pydantic import EmailStr
+
 router = APIRouter()
 
 
@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 # OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-def validate_password(password: str) -> Tuple[bool, str]:
+
+def validate_password(password: str) -> tuple[bool, str]:
     """
     Validate password strength
     Returns: (is_valid: bool, message: str)
@@ -39,12 +40,13 @@ def validate_password(password: str) -> Tuple[bool, str]:
         return False, "Password must contain at least one special character"
     return True, "Password is valid"
 
-def validate_email(email: str) -> Tuple[bool, str]:
+
+def validate_email(email: str) -> tuple[bool, str]:
     """
     Validate email format and domain
     Returns: (is_valid: bool, message: str)
     """
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     if not re.match(email_regex, email):
         return False, "Invalid email format"
     # Add additional domain validation if needed
@@ -53,11 +55,11 @@ def validate_email(email: str) -> Tuple[bool, str]:
 
 @router.post("/", response_model=UserResponse)
 async def create_user(
-    username: str = Form(...),
-    email: EmailStr = Form(...),
-    password: str = Form(...),
-    first_name: Optional[str] = Form(None),
-    last_name: Optional[str] = Form(None)
+    username: Annotated[str, Form(...)],
+    email: Annotated[EmailStr, Form(...)],
+    password: Annotated[str, Form(...)],
+    first_name: Annotated[str | None, Form(None)],
+    last_name: Annotated[str | None, Form(None)],
 ):
     """
     Create a new user with publications and avatar image.
@@ -65,14 +67,13 @@ async def create_user(
     logger.info(f"Creating new user with email: {email}")
 
     # Check if user exists
-    user_exists = await user_model.check_existing_username_and_email(username.lower(), email.lower())
+    user_exists = await user_model.check_existing_username_and_email(
+        username.lower(), email.lower()
+    )
 
     if user_exists:
         detail = "Email or username already registered"
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=detail
-        )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
 
     # Create user document
     user_id = str(ObjectId())
@@ -94,15 +95,13 @@ async def create_user(
     except Exception as e:
         logger.error(f"Database error during user creation: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Error creating user account"
-        )
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error creating user account"
+        ) from None
 
     # Create access token
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": email.lower()},
-        expires_delta=access_token_expires
+        data={"sub": email.lower()}, expires_delta=access_token_expires
     )
 
     # Prepare user response
@@ -115,15 +114,16 @@ async def create_user(
             username=username.lower(),
             first_name=first_name,
             last_name=last_name,
-        )
+        ),
     )
 
     logger.info(f"Successfully created user with email: {email}")
     return user_response
 
+
 # Update the login endpoint
 @router.post("/token", response_model=UserResponse)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     logger.info(f"Login attempt for user: {form_data.username}")
 
     # Find user by username (case insensitive)
@@ -150,8 +150,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     # Create access token
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["email"]},
-        expires_delta=access_token_expires
+        data={"sub": user["email"]}, expires_delta=access_token_expires
     )
 
     # Prepare user response
@@ -163,12 +162,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             email=user["email"],
             username=user["username"],
             first_name=user.get("first_name"),
-            last_name=user.get("last_name")
-        )
+            last_name=user.get("last_name"),
+        ),
     )
 
     logger.info(f"Login successful for user: {form_data.username}")
     return user_response
+
 
 # Get current user
 async def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -183,22 +183,25 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         if email is None:
             raise credentials_exception
     except JWTError:
-        raise credentials_exception
+        raise credentials_exception from None
     user = await user_model.get_by_email(email)
     if user is None:
         raise credentials_exception
     return UserInDB(**user)
 
+
 # Protected route to get current user info
 @router.get("/me", response_model=User)
-async def read_users_me(current_user: User = Depends(get_current_user)):
+async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     return current_user
 
-@router.get("/all", response_model=List[User])
+
+@router.get("/all", response_model=list[User])
 async def get_all_users():
     """get all users"""
     users = await user_model.get_all()
     return users
+
 
 @router.get("/{user_id}", response_model=User)
 async def get_user(user_id: str):

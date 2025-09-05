@@ -1,7 +1,8 @@
 from pydantic import EmailStr
-from app.schemas.user import UserInDB
+
 from app.database.mongodb import db
-from typing import List, Tuple
+from app.schemas.user import UserInDB
+
 
 class UserModel:
     def __init__(self):
@@ -15,17 +16,14 @@ class UserModel:
 
     async def get_by_id(self, id: str) -> UserInDB:
         return await self.collection.find_one({"id": id})
-    
+
     async def get_all(self):
         return await self.collection.find().to_list(1000)
-    
+
     async def check_existing_username_and_email(self, username: str, email: EmailStr) -> bool:
-        existing_user = await self.collection.find_one({
-            "$or": [
-                {"email": email.lower()},
-                {"username": username.lower()}
-            ]
-        })
+        existing_user = await self.collection.find_one(
+            {"$or": [{"email": email.lower()}, {"username": username.lower()}]}
+        )
 
         return existing_user is not None
 
