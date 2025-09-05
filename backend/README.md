@@ -18,4 +18,6 @@
 
 # Software Bootcamp Onboarding
 
-1. Checkout and try hitting some of the API endpoints (except ```/clear```!!!) in the ```persons``` controller using Postman
+1. Checkout the API endpoints in the ```persons``` controller using Postman
+2. Hit the ```/new``` endpoint to add yourself to the DB!
+3. Sign into your MongoDB account in the browser and verify that your name appears in the collection!
