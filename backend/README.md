@@ -14,6 +14,7 @@
     "status": "ok",
     "message": "API is running"
 }```
+12. Make a MongoDB account and get Sierra to add you to the list of users by providing you an email
 
 # Software Bootcamp Onboarding
 
