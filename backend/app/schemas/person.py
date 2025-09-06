@@ -1,5 +1,7 @@
-from pydantic import BaseModel
 from datetime import datetime
+
+from pydantic import BaseModel
+
 
 class Person(BaseModel):
     name: str
@@ -11,6 +13,7 @@ class Person(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class CreatePersonRequest(BaseModel):
     name: str

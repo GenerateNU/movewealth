@@ -1,7 +1,8 @@
-from typing import List
-from motor.motor_asyncio import AsyncIOMotorCollection
-from app.schemas.person import Person, CreatePersonRequest
+from motor.motor_asyncio import AsyncIOMotorCollection  # noqa: TCH002
+
 from app.database.mongodb import db
+from app.schemas.person import CreatePersonRequest, Person
+
 
 class PersonModel:
     def __init__(self):
@@ -14,12 +15,13 @@ class PersonModel:
 
         return Person(**person_data)
 
-    async def get_all_persons(self) -> List[Person]:
+    async def get_all_persons(self) -> list[Person]:
         persons_list = await self.collection.find().to_list(length=None)
 
         return [Person(**person) for person in persons_list]
 
     async def delete_all_persons(self) -> None:
         await self.collection.delete_many({})
+
 
 person_model = PersonModel()
