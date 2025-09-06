@@ -1,7 +1,8 @@
 from motor.motor_asyncio import AsyncIOMotorCollection  # noqa: TCH002
 
 from app.database.mongodb import db
-from app.schemas.person import CreatePersonRequest, Person
+from app.schemas.person import CreatePersonRequest, Person;
+from fastapi import HTTPException
 
 
 class PersonModel:
@@ -22,6 +23,8 @@ class PersonModel:
 
     async def delete_all_persons(self) -> None:
         await self.collection.delete_many({})
+    
+    # TODO: write an endpoint that gets a specific person given their name
 
 
 person_model = PersonModel()

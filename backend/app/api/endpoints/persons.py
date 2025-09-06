@@ -20,3 +20,5 @@ async def get_persons() -> list[Person]:
 @router.delete("/clear", response_model=None)
 async def clear_persons() -> None:
     return await person_model.delete_all_persons()
+
+# TODO: define the get endpoint with the route '/person'
