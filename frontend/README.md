@@ -5,9 +5,9 @@
 - To confirm your installation run:
     node -v
     npm -v
-- cd into mv-react-app and run 'npm install'
-- then run 'npm run dev' and right click on the localhost url!
+2. - cd into mv-react-app and run ```npm install```
+3. then run ```npm run dev``` and right click on the localhost url!
 
 # Software Bootcamp Onboarding
 
-1.
+1. To run the frontend and backend at the same time create two seperate terminals 
