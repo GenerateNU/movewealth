@@ -1,0 +1,32 @@
+repos:
+  # ---------- Backend (Python) ----------
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+        args: [--line-length=100]
+        files: ^backend/
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^backend/
+
+  # ---------- Frontend (ESLint/Prettier via npm) ----------
+  - repo: local
+    hooks:
+      - id: fe-lint-fix
+        name: frontend lint:fix
+        entry: bash -lc 'cd frontend/mv-react-app && npm run lint:fix'
+        language: system
+        pass_filenames: false
+        files: ^frontend/mv-react-app/
+
+      - id: fe-prettier-check
+        name: frontend format:check
+        entry: bash -lc 'cd frontend/mv-react-app && npm run format:check'
+        language: system
+        pass_filenames: false
+        files: ^frontend/mv-react-app/
