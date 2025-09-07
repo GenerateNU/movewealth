@@ -23,7 +23,5 @@ class PersonModel:
     async def delete_all_persons(self) -> None:
         await self.collection.delete_many({})
 
-    # TODO: write an endpoint that gets a specific person given their name
-
 
 person_model = PersonModel()
