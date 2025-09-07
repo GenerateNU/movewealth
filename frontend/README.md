@@ -8,6 +8,11 @@
 2. cd into mv-react-app and run ```npm install```
 3. then run ```npm run dev``` and right click on the localhost url!
 
-# Software Bootcamp Onboarding
+# Some Useful Commands
 
-1. To run the frontend and backend at the same time create two seperate terminals 
+```
+npm run lint
+npm run lint:fix
+npm run format
+npm run format:check
+```
