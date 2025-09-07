@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Sierra from './pages/Sierra';
 import Home from './pages/Home';
-import './App.css'
+import './App.css';
 
 function App() {
   return (
@@ -20,4 +17,5 @@ function App() {
   );
 }
 
-export default App
+export default App;
+// Test comment
