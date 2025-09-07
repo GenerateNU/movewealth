@@ -1,7 +1,10 @@
 name: Deploy (Caller)
 on:
-  push:
-    branches: [main]
+  workflow_dispatch: {}
+
+  # Uncomment to enable automatic deployment on push to main
+  # push:
+  #   branches: [main]
 
 jobs:
   deploy:
